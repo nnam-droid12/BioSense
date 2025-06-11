@@ -1,0 +1,16 @@
+# Google Cloud dependencies
+google-cloud-storage==2.14.0
+google-cloud-aiplatform==1.51.0
+
+# MongoDB client
+pymongo==4.6.3
+
+# XML and CSV parsing
+pandas==2.2.2
+lxml==5.2.2
+
+# Embedding processing and utility
+numpy==1.26.4
+
+# For authentication and environment handling
+python-dotenv==1.0.1
