@@ -35,6 +35,7 @@ build/
 
 src/main/resources/application.yml
 src/biosense-461220-36efbe206468.json
+data-pipeline/gcs_data/drugs/full database.xml
 
 
 
