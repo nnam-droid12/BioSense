@@ -4,6 +4,7 @@ import com.biosense.BioSense_service.auth.entities.ForgotPassword;
 import com.biosense.BioSense_service.auth.entities.User;
 import com.biosense.BioSense_service.auth.repository.ForgotPasswordRepository;
 import com.biosense.BioSense_service.auth.repository.UserRepository;
+import com.biosense.BioSense_service.auth.service.AuthService;
 import com.biosense.BioSense_service.auth.service.EmailService;
 import com.biosense.BioSense_service.auth.utils.ChangePassword;
 import com.biosense.BioSense_service.auth.utils.MailBody;
@@ -26,12 +27,14 @@ public class ForgotPasswordController {
     private final EmailService emailService;
     private final ForgotPasswordRepository forgotPasswordRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthService authService;
 
-    public ForgotPasswordController(UserRepository userRepository, EmailService emailService, ForgotPasswordRepository forgotPasswordRepository, PasswordEncoder passwordEncoder) {
+    public ForgotPasswordController(UserRepository userRepository, EmailService emailService, ForgotPasswordRepository forgotPasswordRepository, PasswordEncoder passwordEncoder, AuthService authService) {
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.forgotPasswordRepository = forgotPasswordRepository;
         this.passwordEncoder = passwordEncoder;
+        this.authService = authService;
     }
 
 
@@ -89,7 +92,7 @@ public class ForgotPasswordController {
         }
 
         String encodedPassword = passwordEncoder.encode(changePassword.password());
-        userRepository.updatePassword(email, encodedPassword);
+        authService.updatePassword(email, encodedPassword);
 
         return ResponseEntity.ok("Password changed successfully");
     }

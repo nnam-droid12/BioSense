@@ -1,25 +1,24 @@
 package com.biosense.BioSense_service.auth.entities;
 
 import jakarta.persistence.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "forgot_password")
+
+@Document(collection = "forgot_password")
 public class ForgotPassword {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer fpId;
 
-    @Column(nullable = false)
     private Integer otp;
 
-    @Column(nullable = false)
+
     private Date expirationTime;
 
-    @OneToOne
+
     private User user;
 
     public ForgotPassword(Integer fpId, Integer otp, Date expirationTime, User user) {

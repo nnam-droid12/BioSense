@@ -7,10 +7,14 @@ public class LoginRequest {
 
     private String password;
 
+    public LoginRequest() {
+    }
+
     LoginRequest(String email, String password) {
         this.email = email;
         this.password = password;
     }
+
 
     public static LoginRequestBuilder builder() {
         return new LoginRequestBuilder();

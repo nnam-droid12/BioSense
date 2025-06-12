@@ -2,25 +2,23 @@ package com.biosense.BioSense_service.auth.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 
-@Entity
-@Table(name = "refresh_token")
+@Document(collation = "refresh_token")
 public class RefreshToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer tokenId;
 
     @NotBlank(message = "refresh token cannot be blank")
-    @Column(nullable = false)
     private String refreshToken;
 
-    @Column(nullable = false)
+
     private Instant expirationTime;
 
-    @OneToOne
+
     private User user;
 
     public RefreshToken(Integer tokenId, @NotBlank(message = "refresh token cannot be blank") String refreshToken, Instant expirationTime, User user) {

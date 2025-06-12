@@ -1,6 +1,5 @@
 package com.biosense.BioSense_service.auth.utils;
 
-
 public class RegisterRequest {
 
     private String name;
@@ -13,6 +12,9 @@ public class RegisterRequest {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public RegisterRequest() {
     }
 
     public static RegisterRequestBuilder builder() {

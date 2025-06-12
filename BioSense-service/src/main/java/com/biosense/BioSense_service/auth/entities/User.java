@@ -4,42 +4,39 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-@Entity
-@Table(name = "users")
+@Document(collection = "user")
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
+    private String userId;
 
-    @Column(nullable = false)
     @NotBlank(message = "name cannot be blank")
     private String name;
 
-    @Column(nullable = false, unique = true)
+
     @NotBlank(message = "email cannot be blank")
     @Email(message = "Email must be valid")
     private String email;
 
-    @Column(nullable = false)
+
     @NotBlank(message = "password cannot be blank")
     @Size(min = 6, message = "password must be 6 characters and above")
     private String password;
 
-    @OneToOne(mappedBy = "user")
     private ForgotPassword forgotPassword;
 
 
-    @OneToOne(mappedBy = "user")
     private RefreshToken refreshToken;
 
-    public User(Integer userId, @NotBlank(message = "name cannot be blank") String name, @NotBlank(message = "email cannot be blank") @Email(message = "Email must be valid") String email, @NotBlank(message = "password cannot be blank") @Size(min = 6, message = "password must be 6 characters and above") String password, ForgotPassword forgotPassword, RefreshToken refreshToken) {
+    public User(String userId, @NotBlank(message = "name cannot be blank") String name, @NotBlank(message = "email cannot be blank") @Email(message = "Email must be valid") String email, @NotBlank(message = "password cannot be blank") @Size(min = 6, message = "password must be 6 characters and above") String password, ForgotPassword forgotPassword, RefreshToken refreshToken) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -48,29 +45,41 @@ public class User implements UserDetails {
         this.refreshToken = refreshToken;
     }
 
-    public User() {
-    }
+//    public User() {
+//    }
 
     public static UserBuilder builder() {
         return new UserBuilder();
     }
 
     @Override
+    public boolean isAccountNonExpired() { return true; }
+
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return true; }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return Collections.emptyList(); // or your roles
     }
 
     @Override
     public String getPassword() {
-        return "";
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return email;
     }
 
-    public Integer getUserId() {
+    public String getUserId() {
         return this.userId;
     }
 
@@ -90,7 +99,7 @@ public class User implements UserDetails {
         return this.refreshToken;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -169,7 +178,7 @@ public class User implements UserDetails {
     }
 
     public static class UserBuilder {
-        private Integer userId;
+        private String userId;
         private @NotBlank(message = "name cannot be blank") String name;
         private @NotBlank(message = "email cannot be blank")
         @Email(message = "Email must be valid") String email;
@@ -181,7 +190,7 @@ public class User implements UserDetails {
         UserBuilder() {
         }
 
-        public UserBuilder userId(Integer userId) {
+        public UserBuilder userId(String userId) {
             this.userId = userId;
             return this;
         }
